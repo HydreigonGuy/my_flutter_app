@@ -12,10 +12,11 @@ class Entity extends SpriteAnimationComponent with HasGameRef<RunnerGame>{
   // todo : take size in constructor to display larger enemies
   Entity(
     this.imagePath,
+    Vector2? size,
     Vector2? spawnPos
     ) : super(
     priority: 2,
-    size: Vector2.all(80.0),
+    size: size,
     position: spawnPos,
   );
 
