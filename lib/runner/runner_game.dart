@@ -12,7 +12,7 @@ class RunnerGame extends FlameGame {
   final World _world = World();
   final Player player = Player();
   final Wall wall = Wall();
-    
+
   @override
   Future<void> onLoad() async {
     await add(_world);
@@ -23,6 +23,16 @@ class RunnerGame extends FlameGame {
     await add(wall);
     wall.position = Vector2(size.x / 2, size.y * 3 / 4);
     wall.size = Vector2(size.y / 30, size.y / 6);
+  }
+
+  @override
+  void update(double delta) {
+    super.update(delta);
+  
+    wall.position.x = wall.position.x - (delta * size.x / 8);
+    if (wall.position.x < 0) {
+      remove(wall);
+    }
   }
 
 }
