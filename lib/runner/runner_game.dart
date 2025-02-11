@@ -16,7 +16,8 @@ class RunnerGame extends FlameGame {
     await add(_world);
     player.anchor = Anchor.center;
     await add(player);
-    player.position = Vector2(_world.size.y / 8, _world.size.y * 4 / 5);
+    player.position = Vector2(size.x / 8, size.y * 4 / 5);
+    player.size = Vector2.all(size.y / 6);
   }
 
 }
