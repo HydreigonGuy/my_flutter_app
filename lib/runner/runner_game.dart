@@ -16,6 +16,8 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   Random random = Random();
   List<Wall> walls = [];
   double wallSpawnTimer = 2;
+  bool jumping = false;
+  double jumpingVelocity = 0;
 
   @override
   Future<void> onLoad() async {
@@ -30,6 +32,15 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   void update(double delta) {
     super.update(delta);
   
+    if (jumping) {
+      jumpingVelocity += delta;
+      player.position.y = ((size.y / 4) * jumpingVelocity * jumpingVelocity) + (size.y / 4);
+      //print("pos: ${player.position.y}");
+      if (player.position.y >= size.y * 4 / 5) {
+        player.position.y = size.y * 4 / 5;
+        jumping = false;
+      }
+    }
     wallSpawnTimer -= delta;
     if (wallSpawnTimer <= 0) {
       _spawnWall();
@@ -39,7 +50,10 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
 
   @override
   bool onTapDown(TapDownInfo info) {
-    print("Jump!");
+    if (!jumping) {
+      jumping = true;
+      jumpingVelocity = -(size.y / 500);
+    }
     return true;
   }
 
