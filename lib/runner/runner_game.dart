@@ -4,6 +4,7 @@ import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/collisions.dart';
+import 'dart:math';
 
 import 'components/world.dart';
 import 'components/player.dart';
@@ -12,6 +13,7 @@ import 'components/wall.dart';
 class RunnerGame extends FlameGame with HasCollisionDetection {
   final World _world = World();
   final Player player = Player();
+  Random random = Random();
   List<Wall> walls = [];
   double wallSpawnTimer = 0;
 
@@ -38,8 +40,9 @@ class RunnerGame extends FlameGame with HasCollisionDetection {
 
   void _spawnWall() {
     Wall newWall = Wall();
-    newWall.position = Vector2(size.x / 2, size.y * 3 / 4);
-    newWall.size = Vector2(size.y / 30, size.y / 6);
+    double height = size.y / 10 + size.y * random.nextDouble() / 6;
+    newWall.position = Vector2(size.x / 2, size.y * 7 / 8 - height);
+    newWall.size = Vector2(size.y / 30, height);
     add(newWall);
     walls.add(newWall);
   }
