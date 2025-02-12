@@ -10,12 +10,12 @@ import 'components/world.dart';
 import 'components/player.dart';
 import 'components/wall.dart';
 
-class RunnerGame extends FlameGame with HasCollisionDetection {
+class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   final World _world = World();
   final Player player = Player();
   Random random = Random();
   List<Wall> walls = [];
-  double wallSpawnTimer = 0;
+  double wallSpawnTimer = 2;
 
   @override
   Future<void> onLoad() async {
@@ -24,24 +24,29 @@ class RunnerGame extends FlameGame with HasCollisionDetection {
     await add(player);
     player.position = Vector2(size.x / 8, size.y * 4 / 5);
     player.size = Vector2.all(size.y / 6);
-    _spawnWall();
   }
 
   @override
   void update(double delta) {
     super.update(delta);
   
-    wallSpawnTimer += delta;
-    if (wallSpawnTimer > 1) {
+    wallSpawnTimer -= delta;
+    if (wallSpawnTimer <= 0) {
       _spawnWall();
-      wallSpawnTimer = 0;
+      wallSpawnTimer = 2 + random.nextDouble() * 4;
     }
+  }
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    print("Jump!");
+    return true;
   }
 
   void _spawnWall() {
     Wall newWall = Wall();
     double height = size.y / 10 + size.y * random.nextDouble() / 6;
-    newWall.position = Vector2(size.x / 2, size.y * 7 / 8 - height);
+    newWall.position = Vector2(size.x, size.y * 7 / 8 - height);
     newWall.size = Vector2(size.y / 30, height);
     add(newWall);
     walls.add(newWall);
