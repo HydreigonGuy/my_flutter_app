@@ -14,6 +14,8 @@ class Player extends Entity with CollisionCallbacks {
   
   @override
   Future<void> onLoad() async {
+    final hitbox = RectangleHitbox();
+    add(hitbox);
     _loadAnimations().then((_) => {animation = _standingAnimation});
   }
 
