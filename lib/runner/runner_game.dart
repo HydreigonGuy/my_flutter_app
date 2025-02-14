@@ -10,6 +10,12 @@ import 'components/world.dart';
 import 'components/player.dart';
 import 'components/wall.dart';
 
+enum GameStatus {
+  running,
+  paused,
+  over
+}
+
 class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   final World _world = World();
   final Player player = Player();
@@ -18,6 +24,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   double wallSpawnTimer = 2;
   bool jumping = false;
   double jumpingVelocity = 0;
+  GameStatus gameStatus = GameStatus.running;
 
   @override
   Future<void> onLoad() async {
@@ -31,33 +38,42 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   @override
   void update(double delta) {
     super.update(delta);
-  
-    // Jumping
-    if (jumping) {
-      jumpingVelocity += delta;
-      player.position.y = ((size.y / 4) * jumpingVelocity * jumpingVelocity) + (size.y / 4);
-      //print("pos: ${player.position.y}");
-      if (player.position.y >= size.y * 4 / 5) {
-        player.position.y = size.y * 4 / 5;
-        jumping = false;
+
+    if (gameStatus == GameStatus.running) {
+
+      // Game end check
+      if (!player.alive) {
+        remove(player);
+        gameStatus = GameStatus.over;
       }
-    }
+  
+      // Jumping
+      if (jumping) {
+        jumpingVelocity += delta;
+        player.position.y = ((size.y / 4) * jumpingVelocity * jumpingVelocity) + (size.y / 4);
+        //print("pos: ${player.position.y}");
+        if (player.position.y >= size.y * 4 / 5) {
+          player.position.y = size.y * 4 / 5;
+          jumping = false;
+        }
+      }
 
-    // Spawn new walls
-    wallSpawnTimer -= delta;
-    if (wallSpawnTimer <= 0) {
-      _spawnWall();
-      wallSpawnTimer = 2 + random.nextDouble() * 4;
-    }
+      // Spawn new walls
+      wallSpawnTimer -= delta;
+      if (wallSpawnTimer <= 0) {
+        _spawnWall();
+        wallSpawnTimer = 2 + random.nextDouble() * 4;
+      }
 
-    // Remove excess walls
-    var wall_destroy_counter = 0;
-    while(wall_destroy_counter < walls.length){
-      if (walls[wall_destroy_counter].position.x < 0) {
-        remove(walls[wall_destroy_counter]);
-        walls.remove(walls[wall_destroy_counter]);
-      } else {
-        wall_destroy_counter++;
+      // Remove excess walls
+      var wall_destroy_counter = 0;
+      while(wall_destroy_counter < walls.length){
+        if (walls[wall_destroy_counter].position.x < 0) {
+          remove(walls[wall_destroy_counter]);
+          walls.remove(walls[wall_destroy_counter]);
+        } else {
+          wall_destroy_counter++;
+        }
       }
     }
   }

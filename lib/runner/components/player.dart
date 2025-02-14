@@ -9,6 +9,7 @@ import 'entity.dart';
 class Player extends Entity with CollisionCallbacks {
   final double _animationSpeed = 0.3;
   late final SpriteAnimation _standingAnimation;
+  bool alive = true;
 
   Player() : super('player.png', Vector2(100, 100), Vector2(0, 0));
   
@@ -33,7 +34,7 @@ class Player extends Entity with CollisionCallbacks {
     Set<Vector2> intersectionPoints,
     PositionComponent other)
   {
-    print("you died");
+    alive = false;
   }
 
 }
