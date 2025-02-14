@@ -17,11 +17,6 @@ class Wall extends SpriteComponent with CollisionCallbacks, HasGameRef<RunnerGam
   void update(double delta) {
     super.update(delta);
     position.x = position.x - (delta * gameRef.size.x / 8);
-
-    if (position.x < 0) {
-      print("Wall destroyed");
-      removeFromParent();
-    }
   }
 
 }

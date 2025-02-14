@@ -32,6 +32,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   void update(double delta) {
     super.update(delta);
   
+    // Jumping
     if (jumping) {
       jumpingVelocity += delta;
       player.position.y = ((size.y / 4) * jumpingVelocity * jumpingVelocity) + (size.y / 4);
@@ -41,10 +42,23 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
         jumping = false;
       }
     }
+
+    // Spawn new walls
     wallSpawnTimer -= delta;
     if (wallSpawnTimer <= 0) {
       _spawnWall();
       wallSpawnTimer = 2 + random.nextDouble() * 4;
+    }
+
+    // Remove excess walls
+    var wall_destroy_counter = 0;
+    while(wall_destroy_counter < walls.length){
+      if (walls[wall_destroy_counter].position.x < 0) {
+        remove(walls[wall_destroy_counter]);
+        walls.remove(walls[wall_destroy_counter]);
+      } else {
+        wall_destroy_counter++;
+      }
     }
   }
 
