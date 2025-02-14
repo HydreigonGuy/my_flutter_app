@@ -11,6 +11,7 @@ import 'dart:math';
 import 'components/world.dart';
 import 'components/player.dart';
 import 'components/wall.dart';
+import 'components/backbtn.dart';
 
 enum GameStatus {
   running,
@@ -18,7 +19,7 @@ enum GameStatus {
   over
 }
 
-class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
+class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
   final World _world = World();
   final Player player = Player();
   Random random = Random();
@@ -27,6 +28,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   bool jumping = false;
   double jumpingVelocity = 0;
   GameStatus gameStatus = GameStatus.running;
+  BackBtn backBtn = BackBtn();
 
   final textRender = TextPaint(
     style: TextStyle(
@@ -48,6 +50,10 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   void update(double delta) {
     super.update(delta);
 
+    if (backBtn.clicked) {
+      _goBack();
+    }
+
     if (gameStatus == GameStatus.running) {
 
       // Game end check
@@ -62,6 +68,9 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
             textRenderer: textRender,
           ),
         );
+        add(backBtn);
+        backBtn.position = Vector2.all(0);
+        backBtn.size = Vector2.all(size.y / 8);
       }
   
       // Jumping
@@ -96,10 +105,13 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   }
 
   @override
-  bool onTapDown(TapDownInfo info) {
-    if (!jumping) {
-      jumping = true;
-      jumpingVelocity = -(size.y / 500);
+  bool onTapDown(a, b) {
+    super.onTapDown(a, b);
+    if (gameStatus == GameStatus.running) {
+      if (!jumping) {
+        jumping = true;
+        jumpingVelocity = -(size.y / 500);
+      }
     }
     return true;
   }
@@ -111,6 +123,12 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
     newWall.size = Vector2(size.y / 30, height);
     add(newWall);
     walls.add(newWall);
+  }
+
+  void _goBack() {
+    if (buildContext != null) {
+      Navigator.pop(buildContext!);
+    }
   }
 
 }
