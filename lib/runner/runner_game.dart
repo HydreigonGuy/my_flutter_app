@@ -4,6 +4,8 @@ import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:flame/collisions.dart';
+import 'package:flame/text.dart';
+import 'package:flame/palette.dart';
 import 'dart:math';
 
 import 'components/world.dart';
@@ -26,6 +28,13 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
   double jumpingVelocity = 0;
   GameStatus gameStatus = GameStatus.running;
 
+  final textRender = TextPaint(
+    style: TextStyle(
+      fontSize: 48.0,
+      color: BasicPalette.black.color,
+    ),
+  );
+
   @override
   Future<void> onLoad() async {
     await add(_world);
@@ -45,6 +54,14 @@ class RunnerGame extends FlameGame with HasCollisionDetection, TapDetector {
       if (!player.alive) {
         remove(player);
         gameStatus = GameStatus.over;
+        add(
+          TextComponent(
+            text: 'Game Over',
+            position: size / 2,
+            anchor: Anchor.center,
+            textRenderer: textRender,
+          ),
+        );
       }
   
       // Jumping
