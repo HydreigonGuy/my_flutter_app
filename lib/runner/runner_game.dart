@@ -16,7 +16,8 @@ import 'components/backbtn.dart';
 enum GameStatus {
   running,
   paused,
-  over
+  over,
+  exited
 }
 
 class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
@@ -39,6 +40,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
 
   @override
   Future<void> onLoad() async {
+    gameStatus = GameStatus.running;
     await add(_world);
     player.anchor = Anchor.center;
     await add(player);
@@ -50,7 +52,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
   void update(double delta) {
     super.update(delta);
 
-    if (backBtn.clicked) {
+    if (backBtn.clicked && gameStatus != GameStatus.exited) {
       _goBack();
     }
 
@@ -128,6 +130,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
   void _goBack() {
     if (buildContext != null) {
       Navigator.pop(buildContext!);
+      gameStatus = GameStatus.exited;
     }
   }
 
