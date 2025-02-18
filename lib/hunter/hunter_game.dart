@@ -10,6 +10,7 @@ import 'dart:math';
 
 import 'components/world.dart';
 import 'components/bomb.dart';
+import 'components/flame.dart';
 import 'components/backbtn.dart';
 
 enum GameStatus {
@@ -22,9 +23,9 @@ enum GameStatus {
 class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
   final World _world = World();
   final Bomb bomb = Bomb();
-//  Random random = Random();
-//  List<Flame> flames = [];
-//  double flameSpawnTimer = 2;
+  Random random = Random();
+  List<Flame> flames = [];
+  double flameSpawnTimer = 2;
   GameStatus gameStatus = GameStatus.running;
   BackBtn backBtn = BackBtn();
 
@@ -54,8 +55,21 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
     }
 
     if (gameStatus == GameStatus.running) {
-
+        // spawn flame
+        flameSpawnTimer -= delta;
+        if (flameSpawnTimer <= 0) {
+          _spawnFlame();
+          flameSpawnTimer = 2 + random.nextDouble() * 4;
+      }
     }
+  }
+
+  void _spawnFlame() {
+    Flame newFlame = Flame();
+    newFlame.position = Vector2(size.x * random.nextDouble(), size.y * random.nextDouble());
+    newFlame.size = Vector2.all(size.y / 12);
+    add(newFlame);
+    flames.add(newFlame);
   }
 
   void _goBack() {
