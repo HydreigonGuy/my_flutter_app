@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'runner.dart';
+import 'hunter.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -37,6 +38,16 @@ class _MenuPageState extends State<MenuPage> {
                     );
                 },
                 child: Text('Runner'),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => HunterGamePage()
+                        )
+                    );
+                },
+                child: Text('Hunter'),
             ),
           ],
         ),
