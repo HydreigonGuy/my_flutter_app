@@ -32,7 +32,7 @@ class Flame extends SpriteComponent with CollisionCallbacks, Tappable, HasGameRe
   }
 
   @override
-  bool onTap(_) {
+  bool onTapDown(_) {
     clicked = true;
     return true;
   }

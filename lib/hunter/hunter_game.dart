@@ -55,11 +55,22 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
     }
 
     if (gameStatus == GameStatus.running) {
-        // spawn flame
-        flameSpawnTimer -= delta;
-        if (flameSpawnTimer <= 0) {
-          _spawnFlame();
-          flameSpawnTimer = 2 + random.nextDouble() * 4;
+      // remove clicked flames
+      var flame_destroy_counter = 0;
+      while(flame_destroy_counter < flames.length){
+        if (flames[flame_destroy_counter].clicked) {
+          remove(flames[flame_destroy_counter]);
+          flames.remove(flames[flame_destroy_counter]);
+        } else {
+          flame_destroy_counter++;
+        }
+      }
+
+      // spawn flame
+      flameSpawnTimer -= delta;
+      if (flameSpawnTimer <= 0) {
+        _spawnFlame();
+        flameSpawnTimer = 2 + random.nextDouble() * 4;
       }
     }
   }
