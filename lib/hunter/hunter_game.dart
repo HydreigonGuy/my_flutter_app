@@ -67,7 +67,7 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
       }
 
       // spawn flame
-      flameSpawnTimer -= delta;
+      flameSpawnTimer -= delta * 3;
       if (flameSpawnTimer <= 0) {
         _spawnFlame();
         flameSpawnTimer = 2 + random.nextDouble() * 4;
@@ -77,7 +77,16 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
 
   void _spawnFlame() {
     Flame newFlame = Flame();
-    newFlame.position = Vector2(size.x * random.nextDouble(), size.y * random.nextDouble());
+    double side = random.nextDouble();
+    if (side < 0.4) {
+      newFlame.position = Vector2(size.x * random.nextDouble(), 0);
+    } else if (side < 0.8) {
+      newFlame.position = Vector2(size.x * random.nextDouble(), size.y);
+    } else if (side < 0.9) {
+      newFlame.position = Vector2(0, size.y * random.nextDouble());
+    } else {
+      newFlame.position = Vector2(size.x, size.y * random.nextDouble());
+    }
     newFlame.size = Vector2.all(size.y / 12);
     add(newFlame);
     flames.add(newFlame);
