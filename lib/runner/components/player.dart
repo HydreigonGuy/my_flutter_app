@@ -11,7 +11,7 @@ class Player extends Entity with CollisionCallbacks {
   late final SpriteAnimation _standingAnimation;
   bool alive = true;
 
-  Player() : super('player.png', Vector2(100, 100), Vector2(0, 0));
+  Player() : super('runner_player.png', Vector2(100, 100), Vector2(0, 0));
   
   @override
   Future<void> onLoad() async {

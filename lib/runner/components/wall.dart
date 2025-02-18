@@ -7,7 +7,7 @@ class Wall extends SpriteComponent with CollisionCallbacks, HasGameRef<RunnerGam
   
   @override
   Future<void>? onLoad() async {
-    sprite = await gameRef.loadSprite('wall.png');
+    sprite = await gameRef.loadSprite('runner_wall.png');
     final hitbox = RectangleHitbox();
     add(hitbox);
     return super.onLoad();

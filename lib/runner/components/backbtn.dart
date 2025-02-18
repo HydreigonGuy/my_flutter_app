@@ -11,7 +11,7 @@ class BackBtn extends SpriteComponent with Tappable, HasGameRef<RunnerGame> {
   
   @override
   Future<void>? onLoad() async {
-    sprite = await gameRef.loadSprite('back.png');
+    sprite = await gameRef.loadSprite('runner_back.png');
     return super.onLoad();
   }
 

@@ -5,7 +5,7 @@ class World extends SpriteComponent with HasGameRef<RunnerGame> {
 
   @override
   Future<void>? onLoad() async {
-    sprite = await gameRef.loadSprite('bg.png');
+    sprite = await gameRef.loadSprite('runner_bg.png');
     size.y = gameRef.size.y;
     size.x = gameRef.size.y * 200 / 30;
     return super.onLoad();
