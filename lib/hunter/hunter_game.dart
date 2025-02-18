@@ -12,6 +12,7 @@ import 'components/world.dart';
 import 'components/bomb.dart';
 import 'components/flame.dart';
 import 'components/backbtn.dart';
+import 'components/gameOver.dart';
 
 enum GameStatus {
   running,
@@ -28,6 +29,7 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
   double flameSpawnTimer = 2;
   GameStatus gameStatus = GameStatus.running;
   BackBtn backBtn = BackBtn();
+  GameOver gameOver = GameOver();
 
 /*  final textRender = TextPaint(
     style: TextStyle(
@@ -55,6 +57,19 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
     }
 
     if (gameStatus == GameStatus.running) {
+      // game over check
+      if (bomb.lit) {
+        remove(bomb);
+        gameStatus = GameStatus.over;
+        add(gameOver);
+        gameOver.anchor = Anchor.center;
+        gameOver.position = size / 2;
+        gameOver.size = Vector2.all(size.y / 4);
+        add(backBtn);
+        backBtn.position = Vector2.all(0);
+        backBtn.size = Vector2.all(size.y / 8);
+      }
+
       // remove clicked flames
       var flame_destroy_counter = 0;
       while(flame_destroy_counter < flames.length){
