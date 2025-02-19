@@ -29,7 +29,9 @@ class _MenuPageState extends State<MenuPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
+            Container(
+              margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child : ElevatedButton(
                 onPressed: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(
@@ -38,8 +40,11 @@ class _MenuPageState extends State<MenuPage> {
                     );
                 },
                 child: Text('Runner'),
+              ),
             ),
-            ElevatedButton(
+            Container(
+              margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child : ElevatedButton(
                 onPressed: () {
                     Navigator.of(context).push(
                         MaterialPageRoute(
@@ -48,6 +53,7 @@ class _MenuPageState extends State<MenuPage> {
                     );
                 },
                 child: Text('Hunter'),
+            ),
             ),
           ],
         ),
