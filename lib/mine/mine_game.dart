@@ -44,6 +44,15 @@ class MineGame extends FlameGame with HasTappables {
             tiles.add(newTile);
         }
     }
+    // add bomb
+    var bombCount = 0;
+    while (bombCount < 10) {
+        var next_bomb = random.nextInt(64);
+        if (!tiles[next_bomb].isBomb) {
+            tiles[next_bomb].isBomb = true;
+            bombCount++;
+        }
+    }
   }
 
   @override
