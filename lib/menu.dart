@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'runner.dart';
 import 'hunter.dart';
+import 'mine.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -53,6 +54,19 @@ class _MenuPageState extends State<MenuPage> {
                     );
                 },
                 child: Text('Hunter'),
+            ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child : ElevatedButton(
+                onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => MineGamePage()
+                        )
+                    );
+                },
+                child: Text('Mine Sweep'),
             ),
             ),
           ],
