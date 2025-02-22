@@ -12,6 +12,7 @@ import 'components/world.dart';
 import 'components/bomb.dart';
 import 'components/flame.dart';
 import 'components/backbtn.dart';
+import 'components/playagainbtn.dart';
 import 'components/gameOver.dart';
 
 enum GameStatus {
@@ -29,6 +30,7 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
   double flameSpawnTimer = 2;
   GameStatus gameStatus = GameStatus.running;
   BackBtn backBtn = BackBtn();
+  PlayAgainBtn playAgainBtn = PlayAgainBtn();
   GameOver gameOver = GameOver();
 
 /*  final textRender = TextPaint(
@@ -56,6 +58,10 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
       _goBack();
     }
 
+    if (playAgainBtn.clicked) {
+      _playAgain();
+    }
+
     if (gameStatus == GameStatus.running) {
       // game over check
       if (bomb.lit) {
@@ -68,6 +74,9 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
         add(backBtn);
         backBtn.position = Vector2.all(0);
         backBtn.size = Vector2.all(size.y / 8);
+        add(playAgainBtn);
+        playAgainBtn.position = Vector2(size.y / 8, 0);
+        playAgainBtn.size = Vector2.all(size.y / 8);
       }
 
       // remove clicked flames
@@ -112,6 +121,21 @@ class HunterGame extends FlameGame with HasCollisionDetection, HasTappables {
       Navigator.pop(buildContext!);
       gameStatus = GameStatus.exited;
     }
+  }
+
+  void _playAgain() {
+    remove(playAgainBtn);
+    playAgainBtn.clicked = false;
+    remove(backBtn);
+    remove(gameOver);
+    while (flames.length != 0) {
+      remove(flames[0]);
+      flames.remove(flames[0]);
+    }
+    add(bomb);
+    bomb.lit = false;
+    flameSpawnTimer = 2;
+    gameStatus = GameStatus.running;
   }
 
 }
