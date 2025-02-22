@@ -99,6 +99,17 @@ class MineGame extends FlameGame with HasTappables {
           backBtn.size = Vector2.all(size.y / 8);
         }
       }
+      // check for win
+      var remaining = 0;
+      for (var i = 0; i < 64; i++)
+        if (!tiles[i].isBomb && !tiles[i].clicked)
+          remaining++;
+      if (remaining == 0) {
+        gameStatus = GameStatus.over;
+        add(backBtn);
+        backBtn.position = Vector2.all(0);
+        backBtn.size = Vector2.all(size.y / 8);
+      }
     }
   }
 
