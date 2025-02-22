@@ -12,6 +12,7 @@ import 'components/world.dart';
 import 'components/player.dart';
 import 'components/wall.dart';
 import 'components/backbtn.dart';
+import 'components/playagainbtn.dart';
 
 enum GameStatus {
   running,
@@ -30,6 +31,7 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
   double jumpingVelocity = 0;
   GameStatus gameStatus = GameStatus.running;
   BackBtn backBtn = BackBtn();
+  PlayAgainBtn playAgainBtn = PlayAgainBtn();
 
   final textRender = TextPaint(
     style: TextStyle(
@@ -37,6 +39,8 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
       color: BasicPalette.black.color,
     ),
   );
+
+  late final gameOverText;
 
   @override
   Future<void> onLoad() async {
@@ -46,6 +50,12 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
     await add(player);
     player.position = Vector2(size.x / 8, size.y * 4 / 5);
     player.size = Vector2.all(size.y / 6);
+    gameOverText = TextComponent(
+            text: 'Game Over',
+            position: size / 2,
+            anchor: Anchor.center,
+            textRenderer: textRender,
+          );
   }
 
   @override
@@ -56,23 +66,23 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
       _goBack();
     }
 
+    if (playAgainBtn.clicked) {
+      _playAgain();
+    }
+
     if (gameStatus == GameStatus.running) {
 
       // Game end check
       if (!player.alive) {
         remove(player);
         gameStatus = GameStatus.over;
-        add(
-          TextComponent(
-            text: 'Game Over',
-            position: size / 2,
-            anchor: Anchor.center,
-            textRenderer: textRender,
-          ),
-        );
+        add(gameOverText);
         add(backBtn);
         backBtn.position = Vector2.all(0);
         backBtn.size = Vector2.all(size.y / 8);
+        add(playAgainBtn);
+        playAgainBtn.position = Vector2(size.y / 8, 0);
+        playAgainBtn.size = Vector2.all(size.y / 8);
       }
   
       // Jumping
@@ -132,6 +142,25 @@ class RunnerGame extends FlameGame with HasCollisionDetection, HasTappables {
       Navigator.pop(buildContext!);
       gameStatus = GameStatus.exited;
     }
+  }
+
+  void _playAgain() {
+    add(player);
+    player.alive = true;
+    player.position = Vector2(size.x / 8, size.y * 4 / 5);
+    player.size = Vector2.all(size.y / 6);
+    jumping = false;
+    jumpingVelocity = 0;
+    wallSpawnTimer = 2;
+    while (walls.length != 0) {
+      remove(walls[0]);
+      walls.remove(walls[0]);
+    }
+    remove(playAgainBtn);
+    remove(backBtn);
+    remove(gameOverText);
+    playAgainBtn.clicked = false;
+    gameStatus = GameStatus.running;
   }
 
 }
