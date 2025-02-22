@@ -53,6 +53,32 @@ class MineGame extends FlameGame with HasTappables {
             bombCount++;
         }
     }
+    // Check how many bombs are around each tile
+    for (var i = 0; i < 8; i++) {
+        for (var j = 0; j < 8; j++) {
+          var c = 0;
+          if (i > 0 && tiles[(i - 1) + j * 8].isBomb)
+            c++;
+          if (i < 7 && tiles[(i + 1) + j * 8].isBomb)
+            c++;
+          if (j > 0 && tiles[i + (j - 1) * 8].isBomb)
+            c++;
+          if (j < 7 && tiles[i + (j + 1) * 8].isBomb)
+            c++;
+
+          if (i > 0 && j > 0 && tiles[(i - 1) + (j - 1) * 8].isBomb)
+            c++;
+          if (i < 7 && j > 0 && tiles[(i + 1) + (j - 1) * 8].isBomb)
+            c++;
+          if (i > 0 && j < 7 && tiles[(i - 1) + (j + 1) * 8].isBomb)
+            c++;
+          if (i < 7 && j < 7 && tiles[(i + 1) + (j + 1) * 8].isBomb)
+            c++;
+
+          tiles[i + j * 8].bombsArround = c;
+        }
+    }
+
   }
 
   @override

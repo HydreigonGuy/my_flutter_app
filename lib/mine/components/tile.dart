@@ -7,6 +7,7 @@ import 'package:my_app/mine/mine_game.dart';
 class Tile extends SpriteAnimationComponent with Tappable, HasGameRef<MineGame> {
   bool clicked = false;
   bool isBomb = false;
+  int bombsArround = 0;
   late final SpriteSheet spriteSheet;
   
   @override
@@ -25,7 +26,7 @@ class Tile extends SpriteAnimationComponent with Tappable, HasGameRef<MineGame> 
     if (isBomb)
       animation = spriteSheet.createAnimation(row: 10, stepTime: 1, to: 1);
     else
-      animation = spriteSheet.createAnimation(row: 1, stepTime: 1, to: 1);
+      animation = spriteSheet.createAnimation(row: 1 + bombsArround, stepTime: 1, to: 1);
     return true;
   }
 
