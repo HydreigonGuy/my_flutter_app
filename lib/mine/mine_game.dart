@@ -90,7 +90,15 @@ class MineGame extends FlameGame with HasTappables {
     }
 
     if (gameStatus == GameStatus.running) {
-
+      // check for game over
+      for (var i = 0; i < 64; i++) {
+        if (tiles[i].isBomb && tiles[i].clicked) {
+          gameStatus = GameStatus.over;
+          add(backBtn);
+          backBtn.position = Vector2.all(0);
+          backBtn.size = Vector2.all(size.y / 8);
+        }
+      }
     }
   }
 

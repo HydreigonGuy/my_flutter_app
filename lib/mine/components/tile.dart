@@ -22,11 +22,13 @@ class Tile extends SpriteAnimationComponent with Tappable, HasGameRef<MineGame> 
 
   @override
   bool onTapUp(_) {
-    clicked = true;
-    if (isBomb)
-      animation = spriteSheet.createAnimation(row: 10, stepTime: 1, to: 1);
-    else
-      animation = spriteSheet.createAnimation(row: 1 + bombsArround, stepTime: 1, to: 1);
+    if (gameRef.gameStatus == GameStatus.running) {
+      clicked = true;
+      if (isBomb)
+        animation = spriteSheet.createAnimation(row: 10, stepTime: 1, to: 1);
+      else
+        animation = spriteSheet.createAnimation(row: 1 + bombsArround, stepTime: 1, to: 1);
+    }
     return true;
   }
 
